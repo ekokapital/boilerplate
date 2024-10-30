@@ -17,15 +17,13 @@ if (fs.existsSync(folderName)) {
     fs.mkdirSync(`${folderName}/src/utils`);
     fs.writeFileSync(
       `${folderName}/.env`,
-      `
-      HOST='127.0.0.1'
+      `HOST='127.0.0.1'
       PORT=4000
-      DB_HOST=
-      DB_PORT=
-      DB_DATABASE=
-      DB_USERNAME=
-      DB_PASSWORD=
-      `
+      DB_HOST=127.0.0.1
+      DB_PORT=3306
+      DB_DATABASE=express-db
+      DB_USERNAME=root
+      DB_PASSWORD=password`
     );
     fs.writeFileSync(
       `${folderName}/package.json`,
@@ -35,7 +33,7 @@ if (fs.existsSync(folderName)) {
         "description": "",
         "main": "/src/index.js",
         "scripts": {
-          "start": "node src/index.js",
+          "start": "nodemon src/index.js",
           "test": "echo \\"Error: no test specified\\" && exit 1"
         },
         "keywords": [],
@@ -45,7 +43,6 @@ if (fs.existsSync(folderName)) {
             "express": "^4.21.1",
             "nodemon": "^3.1.7",
             "dotenv": "^16.4.5",
-            "body-parser": "^1.20.3",
             "mysql2": "^3.11.3"
         }
       }`
@@ -53,8 +50,7 @@ if (fs.existsSync(folderName)) {
 
     fs.writeFileSync(
       `${folderName}/src/index.js`,
-      `
-      const express = require('express');
+      `const express = require('express');
       const app = express();
       const dotenv = require("dotenv").config();
 
@@ -73,7 +69,7 @@ if (fs.existsSync(folderName)) {
 
     fs.writeFileSync(
       `${folderName}/src/config/db.js`,
-      `
+      `require('dotenv').config;
       const mysql = require("mysql2");
 
       const db = mysql.createConnection({
@@ -84,9 +80,7 @@ if (fs.existsSync(folderName)) {
         DB_PASSWORD: process.env.DB_PASSWORD,
       });
 
-      module.exports = db;
-
-      `
+      module.exports = db;`
     );
 
     console.log(`Project ${folderName} successuly created`);
