@@ -74,24 +74,24 @@ if (fs.existsSync(folderName)) {
     fs.writeFileSync(
       `${folderName}/src/config/db.js`,
       `
-      const dotenv = require("dotenv").config();
       const mysql = require("mysql2");
 
       const db = mysql.createConnection({
-        DB_HOST = process.env.DB_HOST || "",
-        DB_PORT = process.env.DB_PORT || "",
-        DB_DATABASE = process.env.DB_DATABASE || "",
-        DB_USERNAME = process.env.DB_USERNAME || "",
-        DB_PASSWORD = process.env.DB_PASSWORD || "",
+        DB_HOST: process.env.DB_HOST,
+        DB_PORT: process.env.DB_PORT,
+        DB_DATABASE: process.env.DB_DATABASE,
+        DB_USERNAME: process.env.DB_USERNAME,
+        DB_PASSWORD: process.env.DB_PASSWORD,
       });
 
       module.exports = db;
+
       `
     );
 
     console.log(`Project ${folderName} successuly created`);
     console.log("Run this command:");
-    console.log(`  cd ${folderName}\n  npm install && npm run start`);
+    console.log(`   cd ${folderName}\n   npm install && npm run start`);
   } catch (error) {
     console.log(`Project ${folderName} cannot be created`);
     console.log(error);
