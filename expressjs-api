@@ -1,0 +1,99 @@
+const fs = require("fs");
+const folderName = process.argv[2] || "ExpressAPIa";
+
+console.log("ExpressJS Boilerplate for API Server\n");
+
+if (fs.existsSync(folderName)) {
+  console.log("Project directory already exist");
+} else {
+  try {
+    fs.mkdirSync(`${folderName}`);
+    fs.mkdirSync(`${folderName}/src`);
+    fs.mkdirSync(`${folderName}/src/config`);
+    fs.mkdirSync(`${folderName}/src/controller`);
+    fs.mkdirSync(`${folderName}/src/middleware`);
+    fs.mkdirSync(`${folderName}/src/model`);
+    fs.mkdirSync(`${folderName}/src/routes`);
+    fs.mkdirSync(`${folderName}/src/utils`);
+    fs.writeFileSync(
+      `${folderName}/.env`,
+      `
+      HOST='127.0.0.1'
+      PORT=4000
+      DB_HOST=
+      DB_PORT=
+      DB_DATABASE=
+      DB_USERNAME=
+      DB_PASSWORD=
+      `
+    );
+    fs.writeFileSync(
+      `${folderName}/package.json`,
+      `{
+        "name": "belajar-express",
+        "version": "1.0.0",
+        "description": "",
+        "main": "/src/index.js",
+        "scripts": {
+          "start": "node src/index.js",
+          "test": "echo \\"Error: no test specified\\" && exit 1"
+        },
+        "keywords": [],
+        "author": "",
+        "license": "ISC",
+        "dependencies": {
+            "express": "^4.21.1",
+            "nodemon": "^3.1.7",
+            "dotenv": "^16.4.5",
+            "body-parser": "^1.20.3",
+            "mysql2": "^3.11.3"
+        }
+      }`
+    );
+
+    fs.writeFileSync(
+      `${folderName}/src/index.js`,
+      `
+      const express = require('express');
+      const app = express();
+      const dotenv = require("dotenv").config();
+
+      const port = process.env.PORT || 3000;
+      const host = process.env.HOST || "127.0.0.1";
+
+      app.get('/', (req, res) => {
+        res.send('Hello World!');
+      });
+
+      app.listen(port, () => {
+        console.log("API is listening on http://%s:%d", host, port);
+      });
+      `
+    );
+
+    fs.writeFileSync(
+      `${folderName}/src/config/db.js`,
+      `
+      const dotenv = require("dotenv").config();
+      const mysql = require("mysql2");
+
+      const db = mysql.createConnection({
+        DB_HOST = process.env.DB_HOST || "",
+        DB_PORT = process.env.DB_PORT || "",
+        DB_DATABASE = process.env.DB_DATABASE || "",
+        DB_USERNAME = process.env.DB_USERNAME || "",
+        DB_PASSWORD = process.env.DB_PASSWORD || "",
+      });
+
+      module.exports = db;
+      `
+    );
+
+    console.log(`Project ${folderName} successuly created`);
+    console.log("Run this command:");
+    console.log(`  cd ${folderName}\n  npm install && npm run start`);
+  } catch (error) {
+    console.log(`Project ${folderName} cannot be created`);
+    console.log(error);
+  }
+}
